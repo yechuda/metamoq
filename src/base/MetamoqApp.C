@@ -3,6 +3,14 @@
 #include "AppFactory.h"
 #include "ModulesApp.h"
 #include "MooseSyntax.h"
+#include "CoupledSpaceChargeDensity.h"
+#include "CoupledPotentialGradient.h"
+#include "DensityDiffusion.h"
+#include "DriftFluxBC.h"
+#include "BodyForceComponent.h"
+#include "InjectionDirichletBC.h"
+#include "ConditionalSideIntegralVariablePostprocessor.h"
+#include "ConditionalSideAverageValue.h"
 
 template<>
 InputParameters validParams<MetamoqApp>()
@@ -45,6 +53,14 @@ extern "C" void MetamoqApp__registerObjects(Factory & factory) { MetamoqApp::reg
 void
 MetamoqApp::registerObjects(Factory & factory)
 {
+  registerKernel(CoupledSpaceChargeDensity);
+  registerKernel(CoupledPotentialGradient);
+  registerKernel(DensityDiffusion);
+  registerBoundaryCondition(DriftFluxBC);
+  registerAux(BodyForceComponent);
+  registerBoundaryCondition(InjectionDirichletBC);
+  registerPostprocessor(ConditionalSideIntegralVariablePostprocessor);
+  registerPostprocessor(ConditionalSideAverageValue);
 }
 
 // External entry point for dynamic syntax association

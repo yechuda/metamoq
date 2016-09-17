@@ -116,6 +116,7 @@ libpcre-opt*
 libpcre-dbg*
 libmoose-opt*
 libmoose-dbg*
+libmetamoq-opt*
 
 #doxygen generated
 */doc/doxygen/html/*
