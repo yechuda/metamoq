@@ -12,45 +12,45 @@
 /*            See COPYRIGHT for full restrictions               */
 /****************************************************************/
 
-#include "CoupledSpaceChargeDensity.h"
+#include "CoupledSpaceChargeDensityLog.h"
 
 template<>
-InputParameters validParams<CoupledSpaceChargeDensity>()
+InputParameters validParams<CoupledSpaceChargeDensityLog>()
 {
   InputParameters params = validParams<Kernel>();
 
   params.addParam<Real>("permittivity_reciprocal", 0.0, "The reciprocal of the product of free space permittivity and relative permittivity");
-  params.addRequiredCoupledVar("space_charge_density", "The coupled variable of space charge density");
+  params.addRequiredCoupledVar("log_density", "The natural logarithm of space charge density");
 
   return params;
 }
 
-CoupledSpaceChargeDensity::CoupledSpaceChargeDensity(const InputParameters & parameters) :
+CoupledSpaceChargeDensityLog::CoupledSpaceChargeDensityLog(const InputParameters & parameters) :
     Kernel(parameters),
-    _coef(getParam<Real>("permittivity_reciprocal")),
-    _v_var(coupled("space_charge_density")),
-    _v(coupledValue("space_charge_density"))
+    _rho_rec(getParam<Real>("permittivity_reciprocal")),
+    _log_density_var(coupled("log_density")),
+    _log_density(coupledValue("log_density"))
 {
 }
 
-Real
-CoupledSpaceChargeDensity::computeQpResidual()
+Real CoupledSpaceChargeDensityLog::computeQpResidual()
 {
-  Real coefficient = _coef;
-  return -coefficient*_v[_qp]*_test[_i][_qp];
+  return -_rho_rec * std::exp(_log_density[_qp]) * _test[_i][_qp];
 }
 
-Real
-CoupledSpaceChargeDensity::computeQpJacobian()
+Real CoupledSpaceChargeDensityLog::computeQpJacobian()
 {
   return 0;
 }
 
-Real
-CoupledSpaceChargeDensity::computeQpOffDiagJacobian(unsigned int jvar)
+Real CoupledSpaceChargeDensityLog::computeQpOffDiagJacobian(unsigned int jvar)
 {
-  Real coefficient = _coef;
-  if (jvar == _v_var)
-    return -coefficient*_phi[_j][_qp]*_test[_i][_qp];
-  return 0.0;
+  if (jvar == _log_density_var)
+  {
+    return -_rho_rec * std::exp(_log_density[_qp]) * _phi[_j][_qp] * _test[_i][_qp];
+  }
+  else
+  {
+    return 0.0;
+  }
 }

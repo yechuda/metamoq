@@ -11,46 +11,29 @@
 /*                                                              */
 /*            See COPYRIGHT for full restrictions               */
 /****************************************************************/
-
-#include "CoupledSpaceChargeDensity.h"
+#include "BodyForceComponentAux.h"
 
 template<>
-InputParameters validParams<CoupledSpaceChargeDensity>()
+InputParameters validParams<BodyForceComponentAux>()
 {
-  InputParameters params = validParams<Kernel>();
-
-  params.addParam<Real>("permittivity_reciprocal", 0.0, "The reciprocal of the product of free space permittivity and relative permittivity");
+  MooseEnum component("x=0 y=1 z=2");
+  InputParameters params = validParams<AuxKernel>();
+  params.addRequiredCoupledVar("potential", "The coupled variable of potential");
   params.addRequiredCoupledVar("space_charge_density", "The coupled variable of space charge density");
-
+  params.addParam<MooseEnum>("component", component, "The component of the body force to compute");
   return params;
 }
 
-CoupledSpaceChargeDensity::CoupledSpaceChargeDensity(const InputParameters & parameters) :
-    Kernel(parameters),
-    _coef(getParam<Real>("permittivity_reciprocal")),
-    _v_var(coupled("space_charge_density")),
-    _v(coupledValue("space_charge_density"))
+BodyForceComponentAux::BodyForceComponentAux(const InputParameters & parameters) :
+    AuxKernel(parameters),
+    _grad_potential(coupledGradient("potential")),
+    _space_charge_density(coupledValue("space_charge_density")),
+    _component(getParam<MooseEnum>("component"))
 {
 }
 
 Real
-CoupledSpaceChargeDensity::computeQpResidual()
+BodyForceComponentAux::computeValue()
 {
-  Real coefficient = _coef;
-  return -coefficient*_v[_qp]*_test[_i][_qp];
-}
-
-Real
-CoupledSpaceChargeDensity::computeQpJacobian()
-{
-  return 0;
-}
-
-Real
-CoupledSpaceChargeDensity::computeQpOffDiagJacobian(unsigned int jvar)
-{
-  Real coefficient = _coef;
-  if (jvar == _v_var)
-    return -coefficient*_phi[_j][_qp]*_test[_i][_qp];
-  return 0.0;
+  return -_space_charge_density[_qp] * _grad_potential[_qp](_component);
 }

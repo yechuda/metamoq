@@ -11,30 +11,36 @@
 /*                                                              */
 /*            See COPYRIGHT for full restrictions               */
 /****************************************************************/
-#include "BodyForceComponent.h"
+
+#ifndef DRIFTFLUXLOGBC_H
+#define DRIFTFLUXLOGBC_H
+
+#include "IntegratedBC.h"
+
+class DriftFluxLogBC;
 
 template<>
-InputParameters validParams<BodyForceComponent>()
-{
-  MooseEnum component("x=0 y=1 z=2");
-  InputParameters params = validParams<AuxKernel>();
-  params.addRequiredCoupledVar("potential", "The coupled variable of potential");
-  params.addRequiredCoupledVar("space_charge_density", "The coupled variable of space charge density");
-  params.addParam<MooseEnum>("component", component, "The component of the body force to compute");
-  return params;
-}
+InputParameters validParams<DriftFluxLogBC>();
 
-BodyForceComponent::BodyForceComponent(const InputParameters & parameters) :
-    AuxKernel(parameters),
-    _grad_potential(coupledGradient("potential")),
-    _space_charge_density(coupledValue("space_charge_density")),
-    _component(getParam<MooseEnum>("component"))
+class DriftFluxLogBC : public IntegratedBC
 {
-}
+public:
 
-Real
-BodyForceComponent::computeValue()
-{
-  return _space_charge_density[_qp] * _grad_potential[_qp](_component);
-}
+  DriftFluxLogBC(const InputParameters & parameters);
 
+protected:
+
+  virtual Real computeQpResidual();
+
+  virtual Real computeQpJacobian();
+
+  virtual Real computeQpOffDiagJacobian(unsigned int jvar);
+
+private:
+
+  const Real _mu;
+  unsigned int _potential_var;
+  const VariableGradient & _grad_potential;
+};
+
+#endif //DRIFTFLUXLOGBC_H

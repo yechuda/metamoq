@@ -12,45 +12,42 @@
 /*            See COPYRIGHT for full restrictions               */
 /****************************************************************/
 
-#include "CoupledSpaceChargeDensity.h"
+#include "DriftDiffusionOffset.h"
 
 template<>
-InputParameters validParams<CoupledSpaceChargeDensity>()
+InputParameters validParams<DriftDiffusionOffset>()
 {
   InputParameters params = validParams<Kernel>();
 
-  params.addParam<Real>("permittivity_reciprocal", 0.0, "The reciprocal of the product of free space permittivity and relative permittivity");
-  params.addRequiredCoupledVar("space_charge_density", "The coupled variable of space charge density");
-
+  params.addRequiredParam<Real>("mobility", "Ion mobility coefficient");
+  params.addRequiredCoupledVar("potential", "The coupled variable of potential");
+  params.addRequiredParam<Real>("offset", "The offset of the space charge density value");
   return params;
 }
 
-CoupledSpaceChargeDensity::CoupledSpaceChargeDensity(const InputParameters & parameters) :
+DriftDiffusionOffset::DriftDiffusionOffset(const InputParameters & parameters) :
     Kernel(parameters),
-    _coef(getParam<Real>("permittivity_reciprocal")),
-    _v_var(coupled("space_charge_density")),
-    _v(coupledValue("space_charge_density"))
-{
-}
+    _coef(getParam<Real>("mobility")),
+    _potential_var(coupled("potential")),
+    _grad_potential(coupledGradient("potential")),
+    _offset(getParam<Real>("offset"))
+{}
 
-Real
-CoupledSpaceChargeDensity::computeQpResidual()
+Real DriftDiffusionOffset::computeQpResidual()
 {
   Real coefficient = _coef;
-  return -coefficient*_v[_qp]*_test[_i][_qp];
+  return coefficient * _offset * _grad_potential[_qp] * _grad_test[_i][_qp];
 }
 
-Real
-CoupledSpaceChargeDensity::computeQpJacobian()
+Real DriftDiffusionOffset::computeQpJacobian()
 {
-  return 0;
+  return 0.0;
 }
 
-Real
-CoupledSpaceChargeDensity::computeQpOffDiagJacobian(unsigned int jvar)
+Real DriftDiffusionOffset::computeQpOffDiagJacobian(unsigned int jvar)
 {
   Real coefficient = _coef;
-  if (jvar == _v_var)
-    return -coefficient*_phi[_j][_qp]*_test[_i][_qp];
+  if (jvar == _potential_var)
+    return coefficient * _offset * _grad_phi[_j][_qp] * _grad_test[_i][_qp];
   return 0.0;
 }

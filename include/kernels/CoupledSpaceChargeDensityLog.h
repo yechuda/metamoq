@@ -12,30 +12,32 @@
 /*            See COPYRIGHT for full restrictions               */
 /****************************************************************/
 
-#ifndef BODYFORCECOMPONENT_H
-#define BODYFORCECOMPONENT_H
+#ifndef COUPLEDSPACECHARGEDENSITYLOG_H
+#define COUPLEDSPACECHARGEDENSITYLOG_H
 
-#include "AuxKernel.h"
+#include "Kernel.h"
 
-class BodyForceComponent;
+class CoupledSpaceChargeDensityLog;
 
 template<>
-InputParameters validParams<BodyForceComponent>();
+InputParameters validParams<CoupledSpaceChargeDensityLog>();
 
-class BodyForceComponent : public AuxKernel
+class CoupledSpaceChargeDensityLog : public Kernel
 {
 public:
-
-  BodyForceComponent(const InputParameters & parameters);
+  CoupledSpaceChargeDensityLog(const InputParameters & parameters);
 
 protected:
-  virtual Real computeValue() override;
+  virtual Real computeQpResidual();
+
+  virtual Real computeQpJacobian();
+
+  virtual Real computeQpOffDiagJacobian(unsigned int jvar);
 
 private:
-
-  const VariableGradient & _grad_potential;
-  const VariableValue & _space_charge_density;
-  int _component;
+  const Real _rho_rec;
+  unsigned int _log_density_var;
+  const VariableValue & _log_density;
 };
 
-#endif // BODYFORCECOMPONENT_H
+#endif //COUPLEDSPACECHARGEDENSITYLOG_H

@@ -12,45 +12,41 @@
 /*            See COPYRIGHT for full restrictions               */
 /****************************************************************/
 
-#include "CoupledSpaceChargeDensity.h"
+#include "PoissonOffset.h"
 
 template<>
-InputParameters validParams<CoupledSpaceChargeDensity>()
+InputParameters validParams<PoissonOffset>()
 {
   InputParameters params = validParams<Kernel>();
 
-  params.addParam<Real>("permittivity_reciprocal", 0.0, "The reciprocal of the product of free space permittivity and relative permittivity");
-  params.addRequiredCoupledVar("space_charge_density", "The coupled variable of space charge density");
+  params.addRequiredParam<Real>("permittivity_reciprocal", "The reciprocal of the product of free space permittivity and relative permittivity");
+  params.addRequiredParam<Real>("offset", "The offset of the space charge density value");
 
   return params;
 }
 
-CoupledSpaceChargeDensity::CoupledSpaceChargeDensity(const InputParameters & parameters) :
+PoissonOffset::PoissonOffset(const InputParameters & parameters) :
     Kernel(parameters),
     _coef(getParam<Real>("permittivity_reciprocal")),
-    _v_var(coupled("space_charge_density")),
-    _v(coupledValue("space_charge_density"))
+    _offset(getParam<Real>("offset"))
 {
 }
 
 Real
-CoupledSpaceChargeDensity::computeQpResidual()
+PoissonOffset::computeQpResidual()
 {
   Real coefficient = _coef;
-  return -coefficient*_v[_qp]*_test[_i][_qp];
+  return -coefficient * _offset * _test[_i][_qp];
 }
 
 Real
-CoupledSpaceChargeDensity::computeQpJacobian()
+PoissonOffset::computeQpJacobian()
 {
-  return 0;
+  return 0.0;
 }
 
 Real
-CoupledSpaceChargeDensity::computeQpOffDiagJacobian(unsigned int jvar)
+PoissonOffset::computeQpOffDiagJacobian(unsigned int jvar)
 {
-  Real coefficient = _coef;
-  if (jvar == _v_var)
-    return -coefficient*_phi[_j][_qp]*_test[_i][_qp];
   return 0.0;
 }

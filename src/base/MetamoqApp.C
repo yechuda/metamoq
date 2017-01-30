@@ -7,10 +7,41 @@
 #include "CoupledPotentialGradient.h"
 #include "DensityDiffusion.h"
 #include "DriftFluxBC.h"
-#include "BodyForceComponent.h"
+#include "BodyForceComponentAux.h"
 #include "InjectionDirichletBC.h"
 #include "ConditionalSideIntegralVariablePostprocessor.h"
 #include "ConditionalSideAverageValue.h"
+#include "ElectricFieldBodyForce.h"
+#include "InjectionPenaltyBC.h"
+#include "InjectionImplicitBC.h"
+#include "InjectionPenaltyNormalBC.h"
+#include "InjectionRatioPenaltyNormalBC.h"
+#include "InjectionPeekConstantBC.h"
+#include "InjectionPeekVariableBC.h"
+#include "BodyForceFilterAux.h"
+#include "DriftDiffusionLog.h"
+#include "CoupledSpaceChargeDensityLog.h"
+#include "DriftFluxLogBC.h"
+#include "InjectionPeekConstantLogBC.h"
+#include "InjectionPeekVariableLogBC.h"
+#include "DensityAux.h"
+#include "DensityArtificialDiffusion.h"
+#include "PecletAux.h"
+#include "DensityArtificialDiffusionTreshold.h"
+#include "ValueJumpIndicator.h"
+#include "LogStabilization.h"
+#include "InjectionPeekConstantDampedBC.h"
+#include "InjectionPeekVariableDampedBC.h"
+#include "DensityCrosswindDiffusion.h"
+#include "DensityPenalty.h"
+#include "AbsDensityAux.h"
+#include "PoissonOffset.h"
+#include "DriftDiffusionOffset.h"
+#include "DriftFluxOffsetBC.h"
+#include "DensityOffsetAux.h"
+#include "InjectionPeekConstantOffsetBC.h"
+#include "InjectionPeekVariableOffsetBC.h"
+#include "DensitySUPG.h"
 
 template<>
 InputParameters validParams<MetamoqApp>()
@@ -57,10 +88,41 @@ MetamoqApp::registerObjects(Factory & factory)
   registerKernel(CoupledPotentialGradient);
   registerKernel(DensityDiffusion);
   registerBoundaryCondition(DriftFluxBC);
-  registerAux(BodyForceComponent);
+  registerAux(BodyForceComponentAux);
   registerBoundaryCondition(InjectionDirichletBC);
   registerPostprocessor(ConditionalSideIntegralVariablePostprocessor);
   registerPostprocessor(ConditionalSideAverageValue);
+  registerKernel(ElectricFieldBodyForce);
+  registerBoundaryCondition(InjectionPenaltyBC);
+  registerBoundaryCondition(InjectionImplicitBC);
+  registerBoundaryCondition(InjectionPenaltyNormalBC);
+  registerBoundaryCondition(InjectionRatioPenaltyNormalBC);
+  registerBoundaryCondition(InjectionPeekConstantBC);
+  registerBoundaryCondition(InjectionPeekVariableBC);
+  registerAux(BodyForceFilterAux);
+  registerKernel(DriftDiffusionLog);
+  registerKernel(CoupledSpaceChargeDensityLog);
+  registerBoundaryCondition(DriftFluxLogBC);
+  registerBoundaryCondition(InjectionPeekConstantLogBC);
+  registerBoundaryCondition(InjectionPeekVariableLogBC);
+  registerAux(DensityAux);
+  registerKernel(DensityArtificialDiffusion);
+  registerAux(PecletAux);
+  registerKernel(DensityArtificialDiffusionTreshold);
+  registerIndicator(ValueJumpIndicator);
+  registerKernel(LogStabilization);
+  registerBoundaryCondition(InjectionPeekConstantDampedBC);
+  registerBoundaryCondition(InjectionPeekVariableDampedBC);
+  registerKernel(DensityCrosswindDiffusion);
+  registerKernel(DensityPenalty);
+  registerAux(AbsDensityAux);
+  registerKernel(PoissonOffset);
+  registerKernel(DriftDiffusionOffset);
+  registerBoundaryCondition(DriftFluxOffsetBC);
+  registerAux(DensityOffsetAux);
+  registerBoundaryCondition(InjectionPeekConstantOffsetBC);
+  registerBoundaryCondition(InjectionPeekVariableOffsetBC);
+  registerKernel(DensitySUPG);
 }
 
 // External entry point for dynamic syntax association
