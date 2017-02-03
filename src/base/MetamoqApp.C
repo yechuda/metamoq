@@ -42,6 +42,7 @@
 #include "InjectionPeekConstantOffsetBC.h"
 #include "InjectionPeekVariableOffsetBC.h"
 #include "DensitySUPG.h"
+#include "CurrentPostprocessor.h"
 
 template<>
 InputParameters validParams<MetamoqApp>()
@@ -123,6 +124,7 @@ MetamoqApp::registerObjects(Factory & factory)
   registerBoundaryCondition(InjectionPeekConstantOffsetBC);
   registerBoundaryCondition(InjectionPeekVariableOffsetBC);
   registerKernel(DensitySUPG);
+  registerPostprocessor(CurrentPostprocessor);
 }
 
 // External entry point for dynamic syntax association
