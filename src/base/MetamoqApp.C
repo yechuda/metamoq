@@ -44,6 +44,9 @@
 #include "DensitySUPG.h"
 #include "CurrentPostprocessor.h"
 #include "PotentialFarfieldBC.h"
+#include "LaplacianRZ.h"
+#include "DriftDiffusionRZ.h"
+#include "CurrentDensityMagnitudeAux.h"
 
 template<>
 InputParameters validParams<MetamoqApp>()
@@ -127,6 +130,9 @@ MetamoqApp::registerObjects(Factory & factory)
   registerKernel(DensitySUPG);
   registerPostprocessor(CurrentPostprocessor);
   registerBoundaryCondition(PotentialFarfieldBC);
+  registerKernel(LaplacianRZ);
+  registerKernel(DriftDiffusionRZ);
+  registerAux(CurrentDensityMagnitudeAux);
 }
 
 // External entry point for dynamic syntax association
