@@ -47,6 +47,26 @@
 #include "LaplacianRZ.h"
 #include "DriftDiffusionRZ.h"
 #include "CurrentDensityMagnitudeAux.h"
+#include "InverseWallDistance.h"
+#include "WallDistanceAux.h"
+#include "OnePointBoundedInverseDistanceDirichletBC.h"
+#include "TwoPointsMinInverseDistanceDirichletBC.h"
+#include "BodyForceComponent.h"
+#include "BodyForceBC.h"
+#include "ElectricFieldBodyForceExplicitRamp.h"
+#include "NeeKovasznay.h"
+#include "ApparentDynamicViscosityAux.h"
+#include "NeeKovasznayNoBCBC.h"
+#include "NeeKovasznayWALE.h"
+#include "NeeKovasznayProductionEHD.h"
+#include "NeeKovasznayProductionEHDSimple.h"
+#include "SpalartAllmaras.h"
+#include "SpalartAllmarasAux.h"
+#include "SpalartAllmarasNoBCBC.h"
+#include "NeeKovasznayStrainRate.h"
+#include "INSMomentumTractionFormRANS.h"
+#include "INSMomentumTractionFormRANSRZ.h"
+#include "ElectricFieldBodyForceExplicit.h"
 
 template<>
 InputParameters validParams<MetamoqApp>()
@@ -133,6 +153,26 @@ MetamoqApp::registerObjects(Factory & factory)
   registerKernel(LaplacianRZ);
   registerKernel(DriftDiffusionRZ);
   registerAux(CurrentDensityMagnitudeAux);
+  registerKernel(InverseWallDistance);
+  registerAux(WallDistanceAux);
+  registerBoundaryCondition(OnePointBoundedInverseDistanceDirichletBC);
+  registerBoundaryCondition(TwoPointsMinInverseDistanceDirichletBC);
+  registerKernel(BodyForceComponent);
+  registerBoundaryCondition(BodyForceBC);
+  registerKernel(ElectricFieldBodyForceExplicitRamp);
+  registerKernel(NeeKovasznay);
+  registerAux(ApparentDynamicViscosityAux);
+  registerBoundaryCondition(NeeKovasznayNoBCBC);
+  registerKernel(NeeKovasznayWALE);
+  registerKernel(NeeKovasznayProductionEHD);
+  registerKernel(NeeKovasznayProductionEHDSimple);
+  registerKernel(SpalartAllmaras);
+  registerAux(SpalartAllmarasAux);
+  registerBoundaryCondition(SpalartAllmarasNoBCBC);
+  registerKernel(NeeKovasznayStrainRate);
+  registerKernel(INSMomentumTractionFormRANS);
+  registerKernel(INSMomentumTractionFormRANSRZ);
+  registerKernel(ElectricFieldBodyForceExplicit);
 }
 
 // External entry point for dynamic syntax association
