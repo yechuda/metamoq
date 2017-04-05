@@ -3,70 +3,36 @@
 #include "AppFactory.h"
 #include "ModulesApp.h"
 #include "MooseSyntax.h"
-#include "CoupledSpaceChargeDensity.h"
-#include "CoupledPotentialGradient.h"
-#include "DensityDiffusion.h"
-#include "DriftFluxBC.h"
-#include "BodyForceComponentAux.h"
-#include "InjectionDirichletBC.h"
-#include "ConditionalSideIntegralVariablePostprocessor.h"
-#include "ConditionalSideAverageValue.h"
-#include "ElectricFieldBodyForce.h"
-#include "InjectionPenaltyBC.h"
-#include "InjectionImplicitBC.h"
-#include "InjectionPenaltyNormalBC.h"
-#include "InjectionRatioPenaltyNormalBC.h"
-#include "InjectionPeekConstantBC.h"
-#include "InjectionPeekVariableBC.h"
-#include "BodyForceFilterAux.h"
-#include "DriftDiffusionLog.h"
-#include "CoupledSpaceChargeDensityLog.h"
-#include "DriftFluxLogBC.h"
-#include "InjectionPeekConstantLogBC.h"
-#include "InjectionPeekVariableLogBC.h"
-#include "DensityAux.h"
-#include "DensityArtificialDiffusion.h"
-#include "PecletAux.h"
-#include "DensityArtificialDiffusionTreshold.h"
-#include "ValueJumpIndicator.h"
-#include "LogStabilization.h"
-#include "InjectionPeekConstantDampedBC.h"
-#include "InjectionPeekVariableDampedBC.h"
-#include "DensityCrosswindDiffusion.h"
-#include "DensityPenalty.h"
-#include "AbsDensityAux.h"
-#include "PoissonOffset.h"
-#include "DriftDiffusionOffset.h"
-#include "DriftFluxOffsetBC.h"
-#include "DensityOffsetAux.h"
-#include "InjectionPeekConstantOffsetBC.h"
-#include "InjectionPeekVariableOffsetBC.h"
-#include "DensitySUPG.h"
-#include "CurrentPostprocessor.h"
-#include "PotentialFarfieldBC.h"
-#include "LaplacianRZ.h"
-#include "DriftDiffusionRZ.h"
-#include "CurrentDensityMagnitudeAux.h"
+
+// Kernels
 #include "InverseWallDistance.h"
-#include "WallDistanceAux.h"
-#include "OnePointBoundedInverseDistanceDirichletBC.h"
-#include "TwoPointsMinInverseDistanceDirichletBC.h"
+#include "CoupledSpaceChargeDensity.h"
+#include "DensityDiffusion.h"
+#include "DensityArtificialDiffusion.h"
+#include "CoupledPotentialGradient.h"
 #include "BodyForceComponent.h"
-#include "BodyForceBC.h"
-#include "ElectricFieldBodyForceExplicitRamp.h"
-#include "NeeKovasznay.h"
-#include "ApparentDynamicViscosityAux.h"
-#include "NeeKovasznayNoBCBC.h"
-#include "NeeKovasznayWALE.h"
-#include "NeeKovasznayProductionEHD.h"
-#include "NeeKovasznayProductionEHDSimple.h"
-#include "SpalartAllmaras.h"
-#include "SpalartAllmarasAux.h"
-#include "SpalartAllmarasNoBCBC.h"
-#include "NeeKovasznayStrainRate.h"
 #include "INSMomentumTractionFormRANS.h"
 #include "INSMomentumTractionFormRANSRZ.h"
 #include "ElectricFieldBodyForceExplicit.h"
+#include "ElectricFieldBodyForceExplicitRamp.h"
+#include "NeeKovasznay.h"
+#include "NeeKovasznayProductionEHD.h"
+
+// Auxkernels
+#include "ApparentDynamicViscosityAux.h"
+#include "WallDistanceAux.h"
+
+// BCs
+#include "OnePointBoundedInverseDistanceDirichletBC.h"
+#include "TwoPointsMinInverseDistanceDirichletBC.h"
+#include "InjectionPeekConstantDampedBC.h"
+#include "InjectionPeekVariableDampedBC.h"
+#include "DriftFluxBC.h"
+#include "BodyForceBC.h"
+#include "NeeKovasznayNoBCBC.h"
+
+// Postprocessors
+#include "CurrentPostprocessor.h"
 
 template<>
 InputParameters validParams<MetamoqApp>()
@@ -109,70 +75,35 @@ extern "C" void MetamoqApp__registerObjects(Factory & factory) { MetamoqApp::reg
 void
 MetamoqApp::registerObjects(Factory & factory)
 {
-  registerKernel(CoupledSpaceChargeDensity);
-  registerKernel(CoupledPotentialGradient);
-  registerKernel(DensityDiffusion);
-  registerBoundaryCondition(DriftFluxBC);
-  registerAux(BodyForceComponentAux);
-  registerBoundaryCondition(InjectionDirichletBC);
-  registerPostprocessor(ConditionalSideIntegralVariablePostprocessor);
-  registerPostprocessor(ConditionalSideAverageValue);
-  registerKernel(ElectricFieldBodyForce);
-  registerBoundaryCondition(InjectionPenaltyBC);
-  registerBoundaryCondition(InjectionImplicitBC);
-  registerBoundaryCondition(InjectionPenaltyNormalBC);
-  registerBoundaryCondition(InjectionRatioPenaltyNormalBC);
-  registerBoundaryCondition(InjectionPeekConstantBC);
-  registerBoundaryCondition(InjectionPeekVariableBC);
-  registerAux(BodyForceFilterAux);
-  registerKernel(DriftDiffusionLog);
-  registerKernel(CoupledSpaceChargeDensityLog);
-  registerBoundaryCondition(DriftFluxLogBC);
-  registerBoundaryCondition(InjectionPeekConstantLogBC);
-  registerBoundaryCondition(InjectionPeekVariableLogBC);
-  registerAux(DensityAux);
-  registerKernel(DensityArtificialDiffusion);
-  registerAux(PecletAux);
-  registerKernel(DensityArtificialDiffusionTreshold);
-  registerIndicator(ValueJumpIndicator);
-  registerKernel(LogStabilization);
-  registerBoundaryCondition(InjectionPeekConstantDampedBC);
-  registerBoundaryCondition(InjectionPeekVariableDampedBC);
-  registerKernel(DensityCrosswindDiffusion);
-  registerKernel(DensityPenalty);
-  registerAux(AbsDensityAux);
-  registerKernel(PoissonOffset);
-  registerKernel(DriftDiffusionOffset);
-  registerBoundaryCondition(DriftFluxOffsetBC);
-  registerAux(DensityOffsetAux);
-  registerBoundaryCondition(InjectionPeekConstantOffsetBC);
-  registerBoundaryCondition(InjectionPeekVariableOffsetBC);
-  registerKernel(DensitySUPG);
-  registerPostprocessor(CurrentPostprocessor);
-  registerBoundaryCondition(PotentialFarfieldBC);
-  registerKernel(LaplacianRZ);
-  registerKernel(DriftDiffusionRZ);
-  registerAux(CurrentDensityMagnitudeAux);
+  // Kernels
   registerKernel(InverseWallDistance);
-  registerAux(WallDistanceAux);
-  registerBoundaryCondition(OnePointBoundedInverseDistanceDirichletBC);
-  registerBoundaryCondition(TwoPointsMinInverseDistanceDirichletBC);
+  registerKernel(CoupledSpaceChargeDensity);
+  registerKernel(DensityDiffusion);
+  registerKernel(DensityArtificialDiffusion);
+  registerKernel(CoupledPotentialGradient);
   registerKernel(BodyForceComponent);
-  registerBoundaryCondition(BodyForceBC);
-  registerKernel(ElectricFieldBodyForceExplicitRamp);
-  registerKernel(NeeKovasznay);
-  registerAux(ApparentDynamicViscosityAux);
-  registerBoundaryCondition(NeeKovasznayNoBCBC);
-  registerKernel(NeeKovasznayWALE);
-  registerKernel(NeeKovasznayProductionEHD);
-  registerKernel(NeeKovasznayProductionEHDSimple);
-  registerKernel(SpalartAllmaras);
-  registerAux(SpalartAllmarasAux);
-  registerBoundaryCondition(SpalartAllmarasNoBCBC);
-  registerKernel(NeeKovasznayStrainRate);
   registerKernel(INSMomentumTractionFormRANS);
   registerKernel(INSMomentumTractionFormRANSRZ);
   registerKernel(ElectricFieldBodyForceExplicit);
+  registerKernel(ElectricFieldBodyForceExplicitRamp);
+  registerKernel(NeeKovasznay);
+  registerKernel(NeeKovasznayProductionEHD);
+
+  // Auxkernels
+  registerAux(ApparentDynamicViscosityAux);
+  registerAux(WallDistanceAux);
+
+  // BCs
+  registerBoundaryCondition(OnePointBoundedInverseDistanceDirichletBC);
+  registerBoundaryCondition(TwoPointsMinInverseDistanceDirichletBC);
+  registerBoundaryCondition(InjectionPeekConstantDampedBC);
+  registerBoundaryCondition(InjectionPeekVariableDampedBC);
+  registerBoundaryCondition(DriftFluxBC);
+  registerBoundaryCondition(BodyForceBC);
+  registerBoundaryCondition(NeeKovasznayNoBCBC);
+
+  // Postprocessors
+  registerPostprocessor(CurrentPostprocessor);
 }
 
 // External entry point for dynamic syntax association
