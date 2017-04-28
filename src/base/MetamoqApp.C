@@ -15,12 +15,16 @@
 #include "INSMomentumTractionFormRANSRZ.h"
 #include "ElectricFieldBodyForceExplicit.h"
 #include "ElectricFieldBodyForceExplicitRamp.h"
+#include "ElectricFieldBodyForceExplicitTimeRamp.h"
 #include "NeeKovasznay.h"
 #include "NeeKovasznayProductionEHD.h"
+#include "FaresSchroderSpecificTurbulenceDissipationRate.h"
+#include "FaresSchroder.h"
 
 // Auxkernels
 #include "ApparentDynamicViscosityAux.h"
 #include "WallDistanceAux.h"
+#include "FaresSchroderDynamicViscosityAux.h"
 
 // BCs
 #include "OnePointBoundedInverseDistanceDirichletBC.h"
@@ -30,6 +34,7 @@
 #include "DriftFluxBC.h"
 #include "BodyForceBC.h"
 #include "NeeKovasznayNoBCBC.h"
+#include "FaresSchroderSpecificTurbulenceDissipationRateBC.h"
 
 // Postprocessors
 #include "CurrentPostprocessor.h"
@@ -86,12 +91,16 @@ MetamoqApp::registerObjects(Factory & factory)
   registerKernel(INSMomentumTractionFormRANSRZ);
   registerKernel(ElectricFieldBodyForceExplicit);
   registerKernel(ElectricFieldBodyForceExplicitRamp);
+  registerKernel(ElectricFieldBodyForceExplicitTimeRamp);
   registerKernel(NeeKovasznay);
   registerKernel(NeeKovasznayProductionEHD);
+  registerKernel(FaresSchroderSpecificTurbulenceDissipationRate);
+  registerKernel(FaresSchroder);
 
   // Auxkernels
   registerAux(ApparentDynamicViscosityAux);
   registerAux(WallDistanceAux);
+  registerAux(FaresSchroderDynamicViscosityAux);
 
   // BCs
   registerBoundaryCondition(OnePointBoundedInverseDistanceDirichletBC);
@@ -101,6 +110,7 @@ MetamoqApp::registerObjects(Factory & factory)
   registerBoundaryCondition(DriftFluxBC);
   registerBoundaryCondition(BodyForceBC);
   registerBoundaryCondition(NeeKovasznayNoBCBC);
+  registerBoundaryCondition(FaresSchroderSpecificTurbulenceDissipationRateBC);
 
   // Postprocessors
   registerPostprocessor(CurrentPostprocessor);
