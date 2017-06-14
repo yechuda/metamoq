@@ -20,11 +20,17 @@
 #include "NeeKovasznayProductionEHD.h"
 #include "FaresSchroderSpecificTurbulenceDissipationRate.h"
 #include "FaresSchroder.h"
+#include "FaresSchroder88.h"
+#include "FaresSchroderProductionEHD.h"
+#include "BodyForceVorticitySquareRootProductionEHD.h"
+#include "TurbulenceKineticEnergyTransport.h"
+#include "SpecificTurbulenceDissipationRateTransport.h"
 
 // Auxkernels
 #include "ApparentDynamicViscosityAux.h"
 #include "WallDistanceAux.h"
 #include "FaresSchroderDynamicViscosityAux.h"
+#include "komegaDynamicViscosityAux.h"
 
 // BCs
 #include "OnePointBoundedInverseDistanceDirichletBC.h"
@@ -96,11 +102,17 @@ MetamoqApp::registerObjects(Factory & factory)
   registerKernel(NeeKovasznayProductionEHD);
   registerKernel(FaresSchroderSpecificTurbulenceDissipationRate);
   registerKernel(FaresSchroder);
+  registerKernel(FaresSchroder88);
+  registerKernel(FaresSchroderProductionEHD);
+  registerKernel(BodyForceVorticitySquareRootProductionEHD);
+  registerKernel(TurbulenceKineticEnergyTransport);
+  registerKernel(SpecificTurbulenceDissipationRateTransport);
 
   // Auxkernels
   registerAux(ApparentDynamicViscosityAux);
   registerAux(WallDistanceAux);
   registerAux(FaresSchroderDynamicViscosityAux);
+  registerAux(komegaDynamicViscosityAux);
 
   // BCs
   registerBoundaryCondition(OnePointBoundedInverseDistanceDirichletBC);
