@@ -25,12 +25,18 @@
 #include "BodyForceVorticitySquareRootProductionEHD.h"
 #include "TurbulenceKineticEnergyTransport.h"
 #include "SpecificTurbulenceDissipationRateTransport.h"
+#include "FaresSchroder88Full.h"
+#include "FaresSchroderArtificialDiffusion.h"
+#include "DensityAdvection.h"
+#include "DensityArtificialDiffusionCoupled.h"
+#include "INSMomentumTimeDerivativeParam.h"
 
 // Auxkernels
 #include "ApparentDynamicViscosityAux.h"
 #include "WallDistanceAux.h"
 #include "FaresSchroderDynamicViscosityAux.h"
 #include "komegaDynamicViscosityAux.h"
+#include "SpecificTurbulenceDissipationRateAux.h"
 
 // BCs
 #include "OnePointBoundedInverseDistanceDirichletBC.h"
@@ -41,6 +47,7 @@
 #include "BodyForceBC.h"
 #include "NeeKovasznayNoBCBC.h"
 #include "FaresSchroderSpecificTurbulenceDissipationRateBC.h"
+#include "CathodeFluxBC.h"
 
 // Postprocessors
 #include "CurrentPostprocessor.h"
@@ -107,12 +114,18 @@ MetamoqApp::registerObjects(Factory & factory)
   registerKernel(BodyForceVorticitySquareRootProductionEHD);
   registerKernel(TurbulenceKineticEnergyTransport);
   registerKernel(SpecificTurbulenceDissipationRateTransport);
+  registerKernel(FaresSchroder88Full);
+  registerKernel(FaresSchroderArtificialDiffusion);
+  registerKernel(DensityAdvection);
+  registerKernel(DensityArtificialDiffusionCoupled);
+  registerKernel(INSMomentumTimeDerivativeParam);
 
   // Auxkernels
   registerAux(ApparentDynamicViscosityAux);
   registerAux(WallDistanceAux);
   registerAux(FaresSchroderDynamicViscosityAux);
   registerAux(komegaDynamicViscosityAux);
+  registerAux(SpecificTurbulenceDissipationRateAux);
 
   // BCs
   registerBoundaryCondition(OnePointBoundedInverseDistanceDirichletBC);
@@ -123,6 +136,7 @@ MetamoqApp::registerObjects(Factory & factory)
   registerBoundaryCondition(BodyForceBC);
   registerBoundaryCondition(NeeKovasznayNoBCBC);
   registerBoundaryCondition(FaresSchroderSpecificTurbulenceDissipationRateBC);
+  registerBoundaryCondition(CathodeFluxBC);
 
   // Postprocessors
   registerPostprocessor(CurrentPostprocessor);
