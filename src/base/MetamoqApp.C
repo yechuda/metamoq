@@ -30,6 +30,8 @@
 #include "DensityAdvection.h"
 #include "DensityArtificialDiffusionCoupled.h"
 #include "INSMomentumTimeDerivativeParam.h"
+#include "INSMassRANS.h"
+#include "INSMassRANSRZ.h"
 
 // Auxkernels
 #include "ApparentDynamicViscosityAux.h"
@@ -119,6 +121,8 @@ MetamoqApp::registerObjects(Factory & factory)
   registerKernel(DensityAdvection);
   registerKernel(DensityArtificialDiffusionCoupled);
   registerKernel(INSMomentumTimeDerivativeParam);
+  registerKernel(INSMassRANS);
+  registerKernel(INSMassRANSRZ);
 
   // Auxkernels
   registerAux(ApparentDynamicViscosityAux);
