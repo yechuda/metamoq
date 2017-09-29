@@ -40,6 +40,9 @@
 #include "komegaDynamicViscosityAux.h"
 #include "SpecificTurbulenceDissipationRateAux.h"
 
+// Materials
+#include "air.h"
+
 // BCs
 #include "OnePointBoundedInverseDistanceDirichletBC.h"
 #include "TwoPointsMinInverseDistanceDirichletBC.h"
@@ -50,6 +53,7 @@
 #include "NeeKovasznayNoBCBC.h"
 #include "FaresSchroderSpecificTurbulenceDissipationRateBC.h"
 #include "CathodeFluxBC.h"
+#include "InjectionOnsetDampedBC.h"
 
 // Postprocessors
 #include "CurrentPostprocessor.h"
@@ -131,6 +135,9 @@ MetamoqApp::registerObjects(Factory & factory)
   registerAux(komegaDynamicViscosityAux);
   registerAux(SpecificTurbulenceDissipationRateAux);
 
+  // Materials
+  registerMaterial(air);
+
   // BCs
   registerBoundaryCondition(OnePointBoundedInverseDistanceDirichletBC);
   registerBoundaryCondition(TwoPointsMinInverseDistanceDirichletBC);
@@ -141,6 +148,7 @@ MetamoqApp::registerObjects(Factory & factory)
   registerBoundaryCondition(NeeKovasznayNoBCBC);
   registerBoundaryCondition(FaresSchroderSpecificTurbulenceDissipationRateBC);
   registerBoundaryCondition(CathodeFluxBC);
+  registerBoundaryCondition(InjectionOnsetDampedBC);
 
   // Postprocessors
   registerPostprocessor(CurrentPostprocessor);
