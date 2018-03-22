@@ -5,55 +5,21 @@
 #include "MooseSyntax.h"
 
 // Kernels
-#include "InverseWallDistance.h"
 #include "CoupledSpaceChargeDensity.h"
 #include "DensityDiffusion.h"
 #include "DensityArtificialDiffusion.h"
 #include "CoupledPotentialGradient.h"
 #include "BodyForceComponent.h"
-#include "INSMomentumTractionFormRANS.h"
-#include "INSMomentumTractionFormRANSRZ.h"
 #include "ElectricFieldBodyForceExplicit.h"
-#include "ElectricFieldBodyForceExplicitRamp.h"
-#include "ElectricFieldBodyForceExplicitTimeRamp.h"
-#include "NeeKovasznay.h"
-#include "NeeKovasznayProductionEHD.h"
-#include "FaresSchroderSpecificTurbulenceDissipationRate.h"
-#include "FaresSchroder.h"
-#include "FaresSchroder88.h"
-#include "FaresSchroderProductionEHD.h"
-#include "BodyForceVorticitySquareRootProductionEHD.h"
-#include "TurbulenceKineticEnergyTransport.h"
-#include "SpecificTurbulenceDissipationRateTransport.h"
-#include "FaresSchroder88Full.h"
-#include "FaresSchroderArtificialDiffusion.h"
-#include "DensityAdvection.h"
-#include "DensityArtificialDiffusionCoupled.h"
-#include "INSMomentumTimeDerivativeParam.h"
-#include "INSMassRANS.h"
-#include "INSMassRANSRZ.h"
-
-// Auxkernels
-#include "ApparentDynamicViscosityAux.h"
-#include "WallDistanceAux.h"
-#include "FaresSchroderDynamicViscosityAux.h"
-#include "komegaDynamicViscosityAux.h"
-#include "SpecificTurbulenceDissipationRateAux.h"
 
 // Materials
 #include "air.h"
 
 // BCs
-#include "OnePointBoundedInverseDistanceDirichletBC.h"
-#include "TwoPointsMinInverseDistanceDirichletBC.h"
-#include "InjectionPeekConstantDampedBC.h"
-#include "InjectionPeekVariableDampedBC.h"
 #include "DriftFluxBC.h"
 #include "BodyForceBC.h"
-#include "NeeKovasznayNoBCBC.h"
-#include "FaresSchroderSpecificTurbulenceDissipationRateBC.h"
-#include "CathodeFluxBC.h"
-#include "InjectionOnsetDampedBC.h"
+#include "InjectionPeekConstantDampedTunedBC.h"
+#include "InjectionPeekVariableDampedTunedBC.h"
 
 // Postprocessors
 #include "CurrentPostprocessor.h"
@@ -100,55 +66,21 @@ void
 MetamoqApp::registerObjects(Factory & factory)
 {
   // Kernels
-  registerKernel(InverseWallDistance);
   registerKernel(CoupledSpaceChargeDensity);
   registerKernel(DensityDiffusion);
   registerKernel(DensityArtificialDiffusion);
   registerKernel(CoupledPotentialGradient);
   registerKernel(BodyForceComponent);
-  registerKernel(INSMomentumTractionFormRANS);
-  registerKernel(INSMomentumTractionFormRANSRZ);
   registerKernel(ElectricFieldBodyForceExplicit);
-  registerKernel(ElectricFieldBodyForceExplicitRamp);
-  registerKernel(ElectricFieldBodyForceExplicitTimeRamp);
-  registerKernel(NeeKovasznay);
-  registerKernel(NeeKovasznayProductionEHD);
-  registerKernel(FaresSchroderSpecificTurbulenceDissipationRate);
-  registerKernel(FaresSchroder);
-  registerKernel(FaresSchroder88);
-  registerKernel(FaresSchroderProductionEHD);
-  registerKernel(BodyForceVorticitySquareRootProductionEHD);
-  registerKernel(TurbulenceKineticEnergyTransport);
-  registerKernel(SpecificTurbulenceDissipationRateTransport);
-  registerKernel(FaresSchroder88Full);
-  registerKernel(FaresSchroderArtificialDiffusion);
-  registerKernel(DensityAdvection);
-  registerKernel(DensityArtificialDiffusionCoupled);
-  registerKernel(INSMomentumTimeDerivativeParam);
-  registerKernel(INSMassRANS);
-  registerKernel(INSMassRANSRZ);
-
-  // Auxkernels
-  registerAux(ApparentDynamicViscosityAux);
-  registerAux(WallDistanceAux);
-  registerAux(FaresSchroderDynamicViscosityAux);
-  registerAux(komegaDynamicViscosityAux);
-  registerAux(SpecificTurbulenceDissipationRateAux);
 
   // Materials
   registerMaterial(air);
 
   // BCs
-  registerBoundaryCondition(OnePointBoundedInverseDistanceDirichletBC);
-  registerBoundaryCondition(TwoPointsMinInverseDistanceDirichletBC);
-  registerBoundaryCondition(InjectionPeekConstantDampedBC);
-  registerBoundaryCondition(InjectionPeekVariableDampedBC);
   registerBoundaryCondition(DriftFluxBC);
   registerBoundaryCondition(BodyForceBC);
-  registerBoundaryCondition(NeeKovasznayNoBCBC);
-  registerBoundaryCondition(FaresSchroderSpecificTurbulenceDissipationRateBC);
-  registerBoundaryCondition(CathodeFluxBC);
-  registerBoundaryCondition(InjectionOnsetDampedBC);
+  registerBoundaryCondition(InjectionPeekConstantDampedTunedBC);
+  registerBoundaryCondition(InjectionPeekVariableDampedTunedBC);
 
   // Postprocessors
   registerPostprocessor(CurrentPostprocessor);

@@ -12,10 +12,10 @@
 /*            See COPYRIGHT for full restrictions               */
 /****************************************************************/
 
-#include "SpecificTurbulenceDissipationRateAux.h"
+#include "omegaGradientAux.h"
 
 template<>
-InputParameters validParams<SpecificTurbulenceDissipationRateAux>()
+InputParameters validParams<omegaGradientAux>()
 {
   InputParameters params = validParams<AuxKernel>();
 
@@ -25,12 +25,13 @@ InputParameters validParams<SpecificTurbulenceDissipationRateAux>()
   params.addCoupledVar("w", 0, "z-velocity"); // only required in 3D
 
   // Parameters
+  params.addRequiredParam<unsigned>("component", "0,1,2 depending on desired component of omega gradient");
   params.addParam<Real>("beta_c_star", 0.09, "beta_c_star parameter");
 
   return params;
 }
 
-SpecificTurbulenceDissipationRateAux::SpecificTurbulenceDissipationRateAux(const InputParameters & parameters) :
+omegaGradientAux::omegaGradientAux(const InputParameters & parameters) :
     AuxKernel(parameters),
 
     // Coupled gradients
@@ -38,17 +39,38 @@ SpecificTurbulenceDissipationRateAux::SpecificTurbulenceDissipationRateAux(const
     _grad_v_vel(coupledGradient("v")),
     _grad_w_vel(coupledGradient("w")),
 
+    // Second derivative tensors
+    _second_u_vel(coupledSecond("u")),
+    _second_v_vel(coupledSecond("v")),
+    _second_w_vel(coupledSecond("w")),
+
     // Parameters
+    _component(getParam<unsigned>("component")),
     _beta_c_star(getParam<Real>("beta_c_star"))
 
 {
 }
 
-Real SpecificTurbulenceDissipationRateAux::computeValue()
+Real omegaGradientAux::computeValue()
 {
-  Real S_mag_squared = 2.0 * _grad_u_vel[_qp](0) * _grad_u_vel[_qp](0) + (_grad_u_vel[_qp](1) + _grad_v_vel[_qp](0)) * (_grad_u_vel[_qp](1) + _grad_v_vel[_qp](0)) +
-                       2.0 * _grad_v_vel[_qp](1) * _grad_v_vel[_qp](1) + (_grad_u_vel[_qp](2) + _grad_w_vel[_qp](0)) * (_grad_u_vel[_qp](2) + _grad_w_vel[_qp](0)) +
-                       2.0 * _grad_w_vel[_qp](2) * _grad_w_vel[_qp](2) + (_grad_v_vel[_qp](2) + _grad_w_vel[_qp](1)) * (_grad_v_vel[_qp](2) + _grad_w_vel[_qp](1));
+  RealTensorValue grad_U;
+  grad_U(0, 0) = _grad_u_vel[_qp](0);
+  grad_U(0, 1) = _grad_u_vel[_qp](1);
+  grad_U(0, 2) = _grad_u_vel[_qp](2);
 
-  return std::pow(S_mag_squared, 0.5) / std::pow(_beta_c_star, 0.5);
+  grad_U(1, 0) = _grad_v_vel[_qp](0);
+  grad_U(1, 1) = _grad_v_vel[_qp](1);
+  grad_U(1, 2) = _grad_v_vel[_qp](2);
+
+  grad_U(2, 0) = _grad_w_vel[_qp](0);
+  grad_U(2, 1) = _grad_w_vel[_qp](1);
+  grad_U(2, 2) = _grad_w_vel[_qp](2);
+
+  RealTensorValue Sij = 0.5 * (grad_U + grad_U.transpose());
+
+  Real S = std::pow(2.0 * libMesh::TensorTools::inner_product(Sij, Sij), 0.5);
+
+  return (2.0 / (S * std::pow(_beta_c_star, 0.5))) * (Sij.row(0) * _second_u_vel[_qp].row(_component) +
+                                                      Sij.row(1) * _second_v_vel[_qp].row(_component) +
+                                                      Sij.row(2) * _second_w_vel[_qp].row(_component));
 }

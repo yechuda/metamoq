@@ -128,6 +128,8 @@ ICE/
 framework/contrib/asio/
 problems/
 backup/
+build/
+test/
 
 # Restartable Data
 *.rd

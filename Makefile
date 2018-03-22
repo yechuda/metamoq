@@ -3,7 +3,7 @@
 ###############################################################################
 #
 # Optional Environment variables
-# MOOSE_DIR        - Root directory of the MOOSE project 
+# MOOSE_DIR        - Root directory of the MOOSE project
 #
 ###############################################################################
 # Use the MOOSE submodule if it exists and MOOSE_DIR is not set
@@ -20,7 +20,28 @@ include $(FRAMEWORK_DIR)/build.mk
 include $(FRAMEWORK_DIR)/moose.mk
 
 ################################## MODULES ####################################
-ALL_MODULES := yes
+# To use certain physics included with MOOSE, set variables below to
+# yes as needed.  Or set ALL_MODULES to yes to turn on everything (overrides
+# other set variables).
+
+ALL_MODULES         := no
+
+CHEMICAL_REACTIONS  := no
+CONTACT             := no
+FLUID_PROPERTIES    := no
+HEAT_CONDUCTION     := no
+MISC                := no
+NAVIER_STOKES       := yes
+PHASE_FIELD         := no
+RDG                 := no
+RICHARDS            := no
+SOLID_MECHANICS     := no
+STOCHASTIC_TOOLS    := no
+TENSOR_MECHANICS    := no
+WATER_STEAM_EOS     := no
+XFEM                := no
+POROUS_FLOW         := no
+
 include $(MOOSE_DIR)/modules/modules.mk
 ###############################################################################
 
@@ -28,7 +49,7 @@ include $(MOOSE_DIR)/modules/modules.mk
 APPLICATION_DIR    := $(CURDIR)
 APPLICATION_NAME   := metamoq
 BUILD_EXEC         := yes
-DEP_APPS           := $(shell $(FRAMEWORK_DIR)/scripts/find_dep_apps.py $(APPLICATION_NAME))
+GEN_REVISION       := no
 include            $(FRAMEWORK_DIR)/app.mk
 
 ###############################################################################
