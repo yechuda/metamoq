@@ -20,6 +20,7 @@
 #include "BodyForceBC.h"
 #include "InjectionPeekConstantDampedTunedBC.h"
 #include "InjectionPeekVariableDampedTunedBC.h"
+#include "InjectionTresholdBC.h"
 
 // Postprocessors
 #include "CurrentPostprocessor.h"
@@ -81,6 +82,7 @@ MetamoqApp::registerObjects(Factory & factory)
   registerBoundaryCondition(BodyForceBC);
   registerBoundaryCondition(InjectionPeekConstantDampedTunedBC);
   registerBoundaryCondition(InjectionPeekVariableDampedTunedBC);
+  registerBoundaryCondition(InjectionTresholdBC);
 
   // Postprocessors
   registerPostprocessor(CurrentPostprocessor);
