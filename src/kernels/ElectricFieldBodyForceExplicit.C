@@ -5,6 +5,7 @@
 /*             See LICENSE for full restrictions                */
 /****************************************************************/
 #include "ElectricFieldBodyForceExplicit.h"
+registerMooseObject("MetamoqApp", ElectricFieldBodyForceExplicit);
 
 template<>
 InputParameters validParams<ElectricFieldBodyForceExplicit>()

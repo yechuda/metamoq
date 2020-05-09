@@ -13,6 +13,7 @@
 /****************************************************************/
 
 #include "DensityArtificialDiffusion.h"
+registerMooseObject("MetamoqApp", DensityArtificialDiffusion);
 
 template<>
 InputParameters validParams<DensityArtificialDiffusion>()

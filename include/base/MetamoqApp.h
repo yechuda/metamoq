@@ -3,20 +3,16 @@
 
 #include "MooseApp.h"
 
-class MetamoqApp;
-
-template<>
-InputParameters validParams<MetamoqApp>();
-
 class MetamoqApp : public MooseApp
 {
 public:
-  MetamoqApp(InputParameters parameters);
+  static InputParameters validParams();
+
+  MetamoqApp(const InputParameters & parameters);
   virtual ~MetamoqApp();
 
   static void registerApps();
-  static void registerObjects(Factory & factory);
-  static void associateSyntax(Syntax & syntax, ActionFactory & action_factory);
+  static void registerAll(Factory & f, ActionFactory & af, Syntax & s);
 };
 
 #endif /* METAMOQAPP_H */

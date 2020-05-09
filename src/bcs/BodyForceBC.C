@@ -13,6 +13,7 @@
 /****************************************************************/
 #include "BodyForceBC.h"
 #include "Function.h"
+registerMooseObject("MetamoqApp", BodyForceBC);
 
 template<>
 InputParameters validParams<BodyForceBC>()

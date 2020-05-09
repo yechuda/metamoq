@@ -13,6 +13,7 @@
 /****************************************************************/
 #include "InjectionPeekVariableDampedTunedBC.h"
 #include "Function.h"
+registerMooseObject("MetamoqApp", InjectionPeekVariableDampedTunedBC);
 
 template<>
 InputParameters validParams<InjectionPeekVariableDampedTunedBC>()

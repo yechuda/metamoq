@@ -13,6 +13,7 @@
 /****************************************************************/
 
 #include "air.h"
+registerMooseObject("MetamoqApp", air);
 
 template<>
 InputParameters validParams<air>()

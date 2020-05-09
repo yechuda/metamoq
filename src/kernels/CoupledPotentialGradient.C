@@ -13,12 +13,13 @@
 /****************************************************************/
 
 #include "CoupledPotentialGradient.h"
+registerMooseObject("MetamoqApp", CoupledPotentialGradient);
 
 template<>
 InputParameters validParams<CoupledPotentialGradient>()
 {
   InputParameters params = validParams<Kernel>();
-  
+
   params.addParam<Real>("mobility", 0.0, "Ion mobility coefficient");
   params.addRequiredCoupledVar("potential", "The coupled variable of potential");
   return params;

@@ -13,6 +13,7 @@
 /****************************************************************/
 
 #include "CoupledSpaceChargeDensity.h"
+registerMooseObject("MetamoqApp", CoupledSpaceChargeDensity);
 
 template<>
 InputParameters validParams<CoupledSpaceChargeDensity>()

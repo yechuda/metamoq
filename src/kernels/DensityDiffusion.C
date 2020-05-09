@@ -5,6 +5,7 @@
 /*             See LICENSE for full restrictions                */
 /****************************************************************/
 #include "DensityDiffusion.h"
+registerMooseObject("MetamoqApp", DensityDiffusion);
 
 template<>
 InputParameters validParams<DensityDiffusion>()

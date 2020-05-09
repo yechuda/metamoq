@@ -13,6 +13,7 @@
 /****************************************************************/
 
 #include "DriftFluxBC.h"
+registerMooseObject("MetamoqApp", DriftFluxBC);
 
 template<>
 InputParameters validParams<DriftFluxBC>()

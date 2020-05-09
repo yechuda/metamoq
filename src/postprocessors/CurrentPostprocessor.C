@@ -13,6 +13,7 @@
 /****************************************************************/
 
 #include "CurrentPostprocessor.h"
+registerMooseObject("MetamoqApp", CurrentPostprocessor);
 
 template<>
 InputParameters validParams<CurrentPostprocessor>()

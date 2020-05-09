@@ -13,6 +13,7 @@
 /****************************************************************/
 #include "InjectionTresholdBC.h"
 #include "Function.h"
+registerMooseObject("MetamoqApp", InjectionTresholdBC);
 
 template<>
 InputParameters validParams<InjectionTresholdBC>()

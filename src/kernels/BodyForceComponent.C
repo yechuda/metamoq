@@ -5,6 +5,7 @@
 /*             See LICENSE for full restrictions                */
 /****************************************************************/
 #include "BodyForceComponent.h"
+registerMooseObject("MetamoqApp", BodyForceComponent);
 
 template<>
 InputParameters validParams<BodyForceComponent>()
